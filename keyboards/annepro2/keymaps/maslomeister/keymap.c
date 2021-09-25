@@ -61,10 +61,10 @@ const uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      */
     [_FN1_LAYER] = KEYMAP(/* Base */
     KC_ESC, KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12, KC_DEL,
-    KC_TRNS, KC_PGDN, KC_UP, KC_PGUP, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_PSCR, KC_HOME, KC_END, KC_TRNS,
-    KC_TRNS, KC_LEFT, KC_DOWN, KC_RIGHT, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-    KC_TRNS, KC_VOLU, KC_VOLD, KC_MUTE, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_INS, KC_DEL, KC_UP,
-    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_LEFT, KC_DOWN, KC_RIGHT
+    KC_NO, KC_PGDN, KC_UP, KC_PGUP, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_PSCR, KC_HOME, KC_END, KC_NO,
+    KC_NO, KC_LEFT, KC_DOWN, KC_RIGHT, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
+    KC_NO, KC_VOLU, KC_VOLD, KC_MUTE, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_INS, KC_DEL, KC_UP,
+    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_LEFT, KC_DOWN, KC_RIGHT
     ),
     /*
      * Layer _FN2_LAYER
@@ -82,11 +82,11 @@ const uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      *
      */
     [_FN2_LAYER] = KEYMAP(/* Base */
-    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_AP_LED_OFF, KC_AP_LED_ON, KC_AP_LED_NEXT_INTENSITY, KC_AP_LED_SPEED, KC_TRNS, KC_TRNS,
-    KC_TRNS, KC_1, KC_2, KC_3, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_PSCR, KC_HOME, KC_END, KC_TRNS,
-    KC_TRNS, KC_4, KC_5, KC_6, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-    KC_TRNS, KC_7, KC_8, KC_9, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_INS, KC_DEL, KC_TRNS,
-    KC_TRNS, KC_TRNS, KC_TRNS, KC_0, KC_TRNS, KC_TRNS, MO(_FN2_LAYER), KC_TRNS
+    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_AP_LED_OFF, KC_AP_LED_ON, KC_AP_LED_NEXT_INTENSITY, KC_AP_LED_SPEED, KC_NO, KC_NO,
+    KC_NO, KC_1, KC_2, KC_3, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_PSCR, KC_HOME, KC_END, KC_NO,
+    KC_NO, KC_4, KC_5, KC_6, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
+    KC_NO, KC_7, KC_8, KC_9, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_INS, KC_DEL, KC_NO,
+    KC_NO, KC_NO, KC_NO, KC_0, KC_NO, KC_NO, MO(_FN2_LAYER), KC_NO
     ),
 };
 const uint16_t keymaps_size = sizeof(keymaps);
@@ -100,7 +100,7 @@ void keyboard_post_init_user(void) {
     // Here are two common functions that you can use. For more LED functions, refer to the file "qmk_ap2_led.h"
 
     // annepro2-shine disables LEDs by default. Uncomment this function to enable them at startup.
-    //annepro2LedEnable();
+    annepro2LedEnable();
 
     // Additionally, it also chooses the first LED profile by default. Refer to the "profiles" array in main.c in
     // annepro2-shine to see the order. Replace "i" with the index of your preferred profile. (i.e the RED profile is index 0)
@@ -128,13 +128,13 @@ layer_state_t layer_state_set_user(layer_state_t layer) {
         default:
             // Reset back to the current profile
             annepro2LedResetForegroundColor();
-            //annepro2LedSetForegroundColor(0x66, 0, 0xFF);
+            //annepro2LedSetForegroundColor(0x66, 0, 0xFF)-0000;
             return layer;
     }
     for (int row = 0; row < MATRIX_ROWS; row++) {
         for (int col = 0; col < MATRIX_COLS; col++) {
-            // if (keymaps[get_highest_layer(layer)][row][col] != KC_TRNS) {
-            if (keymap[MATRIX_COLS * row + col] != KC_TRNS) {
+            // if (keymaps[get_highest_layer(layer)][row][col] != KC_NO) {
+            if (keymap[MATRIX_COLS * row + col] != KC_NO) {
                 color.p.alpha                 = 0xFF; /* Overwrite */
                 ledMask[ROWCOL2IDX(row, col)] = color;
             } else {
