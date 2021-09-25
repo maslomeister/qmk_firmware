@@ -127,8 +127,8 @@ layer_state_t layer_state_set_user(layer_state_t layer) {
             break;
         default:
             // Reset back to the current profile
-            //annepro2LedResetForegroundColor();
-            annepro2LedSetForegroundColor(0x66, 0, 0xFF);
+            annepro2LedResetForegroundColor();
+            //annepro2LedSetForegroundColor(0x66, 0, 0xFF);
             return layer;
     }
     for (int row = 0; row < MATRIX_ROWS; row++) {
