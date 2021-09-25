@@ -62,14 +62,14 @@ const uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_FN1_LAYER] = KEYMAP(/* Base */
     KC_ESC, KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12, KC_DEL,
     KC_NO, KC_PGDN, KC_UP, KC_PGUP, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_PSCR, KC_HOME, KC_END, KC_NO,
-    KC_NO, KC_LEFT, KC_DOWN, KC_RIGHT, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
+    KC_NO, KC_LEFT, KC_DOWN, KC_RIGHT, KC_NO, KC_NO, KC_MEDIA_PREV_TRACK, KC_MEDIA_PLAY_PAUSE, KC_MEDIA_NEXT_TRACK, KC_NO, KC_NO, KC_NO, KC_NO,
     KC_NO, KC_VOLU, KC_VOLD, KC_MUTE, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_INS, KC_DEL, KC_UP,
     KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_LEFT, KC_DOWN, KC_RIGHT
     ),
     /*
      * Layer _FN2_LAYER
      * ,-----------------------------------------------------------------------------------------.
-     * |     |     |     |     |     |     |     |     |LEDOF|LEDON|LED_INTENS|LED_SPEED|   |    |
+     * |     |     |     |    |    |   |   |   |LEDOF|LEDON|LED_INTENS|LED_SPEED|   |CTRL_ALT_DEL|
      * |-----------------------------------------------------------------------------------------+
      * |        | KC_1| KC_2| KC_3|     |     |     |     |     |     | PS | HOME | END |        |
      * |-----------------------------------------------------------------------------------------+
@@ -82,7 +82,7 @@ const uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      *
      */
     [_FN2_LAYER] = KEYMAP(/* Base */
-    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_AP_LED_OFF, KC_AP_LED_ON, KC_AP_LED_NEXT_INTENSITY, KC_AP_LED_SPEED, KC_NO, KC_NO,
+    KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_AP_LED_OFF, KC_AP_LED_ON, KC_AP_LED_NEXT_INTENSITY, KC_AP_LED_SPEED, KC_NO, LALT(LCTL(KC_DEL)),
     KC_NO, KC_1, KC_2, KC_3, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_PSCR, KC_HOME, KC_END, KC_NO,
     KC_NO, KC_4, KC_5, KC_6, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
     KC_NO, KC_7, KC_8, KC_9, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_INS, KC_DEL, KC_NO,
@@ -91,8 +91,15 @@ const uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 const uint16_t keymaps_size = sizeof(keymaps);
 
-void enableProfileColor(uint8_t * profile);
+void enableProfileColor(uint8_t * profile, const uint16_t);
 void resetProfileColor(void);
+
+bool is_caps_set = false;
+
+uint8_t base_profile[] = {0x66, 0, 0xFF};
+uint8_t caps_profile[] = {0xFF,0x00,0x00};
+uint8_t fn1_profile[] = {0xFF,0x60,0xDF};
+uint8_t fn2_profile[] = {0x60,0xFF,0xFF};
 
 void matrix_init_user(void) {}
 
@@ -100,32 +107,60 @@ void matrix_scan_user(void) {}
 
 void keyboard_post_init_user(void) {
     annepro2LedEnable();
+    resetProfileColor();
+}
+
+// The function to handle the caps lock logic
+// It's called after the capslock changes state or after entering layers 1 and 2.
+bool led_update_user(led_t leds) {
+    if (leds.caps_lock) {
+        is_caps_set = true;
+        resetProfileColor();
+        return true;
+    } else if(is_caps_set) {
+        is_caps_set = false;
+        resetProfileColor();
+    }
+
+    return true;
 }
 
 layer_state_t layer_state_set_user(layer_state_t layer) {
     const uint16_t *keymap = &keymaps[get_highest_layer(layer)][0][0];
-    annepro2Led_t color = {
-        .p.red = 0, .p.green = 0, .p.blue = 0, .p.alpha = 0xff, /* Overwrite color */
-    };
     switch (get_highest_layer(layer)) {
         case _FN1_LAYER:
             // Set the leds to green
-            color.p.red = 0xFF;
-            color.p.green = 0x60;
-            color.p.blue = 0xDF;
+            // color.p.red = 0xFF;
+            // color.p.green = 0x60;
+            // color.p.blue = 0xDF;
+            enableProfileColor(fn1_profile);
             break;
         case _FN2_LAYER:
             // Set the leds to blue
-            color.p.red = 0x60;
-            color.p.green = 0xFF;
-            color.p.blue = 0xFF;
+            // color.p.red = 0x60;
+            // color.p.green = 0xFF;
+            // color.p.blue = 0xFF;
+            enableProfileColor(fn2_profile);
             break;
         default:
             // Reset back to the current profile
-            annepro2LedResetForegroundColor();
+            //annepro2LedResetForegroundColor();
             //annepro2LedSetForegroundColor(0x66, 0, 0xFF)-0000;
-            return layer;
+            resetProfileColor();
+            break;
     }
+    return layer;
+}
+
+void enableProfileColor (uint8_t * profile, const uint16_t *keymap) {
+    annepro2Led_t color = {
+        .p.red = 0, .p.green = 0, .p.blue = 0, .p.alpha = 0xff, /* Overwrite color */
+        };
+
+    color.p.red = profile[0];
+    color.p.green = profile[1];
+    color.p.blue = profile[2];
+
     for (int row = 0; row < MATRIX_ROWS; row++) {
         for (int col = 0; col < MATRIX_COLS; col++) {
             // if (keymaps[get_highest_layer(layer)][row][col] != KC_NO) {
@@ -139,38 +174,25 @@ layer_state_t layer_state_set_user(layer_state_t layer) {
         }
         annepro2LedMaskSetRow(row);
     }
-    return layer;
+
+    if(is_caps_set){
+        color.p.red = 0xFF;
+        color.p.green = 0x00;
+        color.p.blue = 0x00;
+
+        annepro2LedMaskSetKey(4, 4, color);
+    }
 }
 
-
-
-// The function to handle the caps lock logic
-// It's called after the capslock changes state or after entering layers 1 and 2.
-bool led_update_user(led_t leds) {
-    if (leds.caps_lock) {
-    // Set the caps-lock to red
+void resetProfileColor(void) {
+    annepro2LedSetForegroundColor(base_profile[0], base_profile[1], base_profile[2]);
+    if(is_caps_set){
         const annepro2Led_t color = {
             .p.red = 0xff,
             .p.green = 0x00,
             .p.blue = 0x00,
             .p.alpha = 0xff
         };
-
-    annepro2LedMaskSetKey(4, 4, color);
-    /* NOTE: Instead of colouring the capslock only, you can change the whole
-       keyboard with annepro2LedSetForegroundColor */
-    } else {
-    // Reset the capslock if there is no layer active
-        if(!layer_state_is(_FN1_LAYER) && !layer_state_is(_FN2_LAYER)) {
-            const annepro2Led_t color = {
-                .p.red = 0xff,
-                .p.green = 0x00,
-                .p.blue = 0x00,
-                .p.alpha = 0x00
-            };
         annepro2LedMaskSetKey(4, 4, color);
-        }
     }
-
-    return true;
 }
