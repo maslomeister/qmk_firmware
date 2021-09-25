@@ -151,23 +151,10 @@ layer_state_t layer_state_set_user(layer_state_t layer) {
 // It's called after the capslock changes state or after entering layers 1 and 2.
 bool led_update_user(led_t leds) {
     if (leds.caps_lock) {
-        // Set the caps-lock to red
-        const annepro2Led_t color = {
-            .p.red = 0xff,
-            .p.green = 0x00,
-            .p.blue = 0x00,
-            .p.alpha = 0xff};
-
-        //annepro2LedMaskSetKey(2, 0, color);
-        annepro2LedSetForegroundColor(color);
-        /* NOTE: Instead of colouring the capslock only, you can change the whole
-           keyboard with annepro2LedSetForegroundColor */
+        // Set the leds to red
+        annepro2LedSetForegroundColor(0xFF, 0x00, 0x00);
     } else {
-        // Reset the capslock if there is no layer active
-        if (!layer_state_is(_FN1_LAYER) && !layer_state_is(_FN2_LAYER)) {
-            const annepro2Led_t color = {.p.red = 0xff, .p.green = 0x00, .p.blue = 0x00, .p.alpha = 0x00};
-            annepro2LedMaskSetKey(2, 0, color);
-        }
+        annepro2LedResetForegroundColor();
     }
 
     return true;
