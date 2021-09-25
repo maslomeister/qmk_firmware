@@ -161,6 +161,10 @@ void enableProfileColor (uint8_t * profile, const uint16_t * keymap) {
             .p.red = 0, .p.green = 0, .p.blue = 0, .p.alpha = 0xff, /* Overwrite color */
             };
 
+        annepro2Led_t black = {
+            .p.red = 0, .p.green = 0, .p.blue = 0, .p.alpha = 0xff, /* Overwrite color */
+            };
+
         color.p.red = profile[0];
         color.p.green = profile[1];
         color.p.blue = profile[2];
@@ -172,11 +176,7 @@ void enableProfileColor (uint8_t * profile, const uint16_t * keymap) {
                     color.p.alpha                 = 0xFF; /* Overwrite */
                     ledMask[ROWCOL2IDX(row, col)] = color;
                 } else {
-                    color.p.red = empty_profile[0];
-                    color.p.green = empty_profile[1];
-                    color.p.blue = empty_profile[2];
-                    color.p.alpha                 = 0xFF; /* Don't overwrite */
-                    ledMask[ROWCOL2IDX(row, col)] = color;
+                    ledMask[ROWCOL2IDX(row, col)] = black;
                 }
             }
             annepro2LedMaskSetRow(row);
