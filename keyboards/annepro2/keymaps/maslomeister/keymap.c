@@ -91,7 +91,7 @@ const uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 const uint16_t keymaps_size = sizeof(keymaps);
 
-void enableProfileColor(uint8_t * profile, const uint16_t);
+void enableProfileColor(uint8_t * profile, const * uint16_t);
 void resetProfileColor(void);
 
 bool is_caps_set = false;
@@ -133,14 +133,14 @@ layer_state_t layer_state_set_user(layer_state_t layer) {
             // color.p.red = 0xFF;
             // color.p.green = 0x60;
             // color.p.blue = 0xDF;
-            enableProfileColor(fn1_profile);
+            enableProfileColor(fn1_profile, keymap);
             break;
         case _FN2_LAYER:
             // Set the leds to blue
             // color.p.red = 0x60;
             // color.p.green = 0xFF;
             // color.p.blue = 0xFF;
-            enableProfileColor(fn2_profile);
+            enableProfileColor(fn2_profile, keymap);
             break;
         default:
             // Reset back to the current profile
