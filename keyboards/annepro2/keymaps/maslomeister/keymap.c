@@ -91,20 +91,15 @@ const uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 const uint16_t keymaps_size = sizeof(keymaps);
 
+void enableProfileColor(uint8_t * profile);
+void resetProfileColor(void);
+
 void matrix_init_user(void) {}
 
 void matrix_scan_user(void) {}
 
-// Code to run after initializing the keyboard
 void keyboard_post_init_user(void) {
-    // Here are two common functions that you can use. For more LED functions, refer to the file "qmk_ap2_led.h"
-
-    // annepro2-shine disables LEDs by default. Uncomment this function to enable them at startup.
     annepro2LedEnable();
-
-    // Additionally, it also chooses the first LED profile by default. Refer to the "profiles" array in main.c in
-    // annepro2-shine to see the order. Replace "i" with the index of your preferred profile. (i.e the RED profile is index 0)
-    // annepro2LedSetProfile(i);
 }
 
 layer_state_t layer_state_set_user(layer_state_t layer) {
@@ -147,6 +142,8 @@ layer_state_t layer_state_set_user(layer_state_t layer) {
     return layer;
 }
 
+
+
 // The function to handle the caps lock logic
 // It's called after the capslock changes state or after entering layers 1 and 2.
 bool led_update_user(led_t leds) {
@@ -171,7 +168,7 @@ bool led_update_user(led_t leds) {
                 .p.blue = 0x00,
                 .p.alpha = 0x00
             };
-        annepro2LedSetForegroundColor(color.p.red, color.p.green, color.p.blue);
+        annepro2LedResetForegroundColor();
         }
     }
 
