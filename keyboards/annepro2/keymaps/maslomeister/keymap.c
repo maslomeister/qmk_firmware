@@ -96,7 +96,8 @@ void resetProfileColor(void);
 
 bool is_caps_set = false;
 
-uint8_t base_profile[] = {0x66, 0, 0xFF};
+uint8_t base_profile[] = {0x66, 0x00, 0xFF};
+uint8_t empty_profile[] = {0x00, 0x00, 0x00};
 uint8_t caps_profile[] = {0xFF,0x00,0x00};
 uint8_t fn1_profile[] = {0xFF,0x60,0xDF};
 uint8_t fn2_profile[] = {0x60,0xFF,0xFF};
@@ -153,46 +154,40 @@ layer_state_t layer_state_set_user(layer_state_t layer) {
 }
 
 void enableProfileColor (uint8_t * profile, const uint16_t * keymap) {
-    annepro2Led_t color = {
-        .p.red = 0, .p.green = 0, .p.blue = 0, .p.alpha = 0xff, /* Overwrite color */
-        };
+    if(is_caps_set) {
+        annepro2LedSetForegroundColor(caps_profile[0], caps_profile[1], caps_profile[2]);
+    } else {
+        annepro2Led_t color = {
+            .p.red = 0, .p.green = 0, .p.blue = 0, .p.alpha = 0xff, /* Overwrite color */
+            };
 
-    color.p.red = profile[0];
-    color.p.green = profile[1];
-    color.p.blue = profile[2];
+        color.p.red = profile[0];
+        color.p.green = profile[1];
+        color.p.blue = profile[2];
 
-    for (int row = 0; row < MATRIX_ROWS; row++) {
-        for (int col = 0; col < MATRIX_COLS; col++) {
-            // if (keymaps[get_highest_layer(layer)][row][col] != KC_NO) {
-            if (keymap[MATRIX_COLS * row + col] != KC_NO) {
-                color.p.alpha                 = 0xFF; /* Overwrite */
-                ledMask[ROWCOL2IDX(row, col)] = color;
-            } else {
-                color.p.alpha                 = 0x00; /* Don't overwrite */
-                ledMask[ROWCOL2IDX(row, col)] = color;
+        for (int row = 0; row < MATRIX_ROWS; row++) {
+            for (int col = 0; col < MATRIX_COLS; col++) {
+                // if (keymaps[get_highest_layer(layer)][row][col] != KC_NO) {
+                if (keymap[MATRIX_COLS * row + col] != KC_NO) {
+                    color.p.alpha                 = 0xFF; /* Overwrite */
+                    ledMask[ROWCOL2IDX(row, col)] = color;
+                } else {
+                    color.p.red = empty_profile[0];
+                    color.p.green = empty_profile[1];
+                    color.p.blue = empty_profile[2];
+                    color.p.alpha                 = 0xFF; /* Don't overwrite */
+                    ledMask[ROWCOL2IDX(row, col)] = color;
+                }
             }
+            annepro2LedMaskSetRow(row);
         }
-        annepro2LedMaskSetRow(row);
-    }
-
-    if(is_caps_set){
-        color.p.red = 0xFF;
-        color.p.green = 0x00;
-        color.p.blue = 0x00;
-
-        annepro2LedMaskSetKey(4, 4, color);
     }
 }
 
 void resetProfileColor(void) {
-    annepro2LedSetForegroundColor(base_profile[0], base_profile[1], base_profile[2]);
-    if(is_caps_set){
-        const annepro2Led_t color = {
-            .p.red = 0xff,
-            .p.green = 0x00,
-            .p.blue = 0x00,
-            .p.alpha = 0xff
-        };
-        annepro2LedMaskSetKey(4, 4, color);
+    if(is_caps_set) {
+        annepro2LedSetForegroundColor(caps_profile[0], caps_profile[1], caps_profile[2]);
+    } else {
+        annepro2LedSetForegroundColor(base_profile[0], base_profile[1], base_profile[2]);
     }
 }
