@@ -3,16 +3,10 @@
 #include "qmk_ap2_led.h"
 #include "config.h"
 
-
-enum macros{
-
-}
-
 enum anne_pro_layers {
     _BASE_LAYER,
     _FN1_LAYER,
     _FN2_LAYER,
-    _FN3_LAYER,
 };
 
 // Key symbols are based on QMK. Use them to remap your keyboard
@@ -48,7 +42,8 @@ const uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TAB, KC_Q, KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O, KC_P, KC_LBRC, KC_RBRC, KC_BSLS,
     LT(_FN1_LAYER, KC_ESC), MT(MOD_LCTL | KC_A, KC_A), KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L, KC_SCLN, KC_QUOT, KC_ENT,
     KC_LSFT, KC_Z, MT(MOD_LCTL | KC_X, KC_X), MT(MOD_LCTL | KC_C, KC_C), MT(MOD_LCTL | KC_V, KC_V), KC_B, KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH, KC_UP,
-    KC_LCTL, KC_LGUI, KC_LALT, KC_SPC, LT(_FN2_LAYER, KC_CAPS), KC_LEFT, KC_DOWN, KC_RIGHT),
+    KC_LCTL, KC_LGUI, KC_LALT, KC_SPC, LT(_FN2_LAYER, KC_CAPS), KC_LEFT, KC_DOWN, KC_RIGHT
+    ),
     /*
      * Layer _FN1_LAYER
      * ,-----------------------------------------------------------------------------------------.
@@ -69,7 +64,8 @@ const uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TRNS, KC_PGDN, KC_UP, KC_PGUP, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_PSCR, KC_HOME, KC_END, KC_TRNS,
     KC_TRNS, KC_LEFT, KC_DOWN, KC_RIGHT, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
     KC_TRNS, KC_VOLU, KC_VOLD, KC_MUTE, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_INS, KC_DEL, KC_UP,
-    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_LEFT, KC_DOWN, KC_RIGHT),
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_LEFT, KC_DOWN, KC_RIGHT
+    ),
     /*
      * Layer _FN2_LAYER
      * ,-----------------------------------------------------------------------------------------.
@@ -90,7 +86,8 @@ const uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TRNS, KC_1, KC_2, KC_3, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_PSCR, KC_HOME, KC_END, KC_TRNS,
     KC_TRNS, KC_4, KC_5, KC_6, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
     KC_TRNS, KC_7, KC_8, KC_9, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_INS, KC_DEL, KC_TRNS,
-    KC_TRNS, KC_TRNS, KC_TRNS, KC_0, KC_TRNS, KC_TRNS, MO(_FN2_LAYER), KC_TRNS),
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_0, KC_TRNS, KC_TRNS, MO(_FN2_LAYER), KC_TRNS
+    ),
 };
 const uint16_t keymaps_size = sizeof(keymaps);
 
@@ -112,7 +109,7 @@ void keyboard_post_init_user(void) {
 
 layer_state_t layer_state_set_user(layer_state_t layer) {
     const uint16_t *keymap = &keymaps[get_highest_layer(layer)][0][0];
-    annepro2Led_t   color  = {
+    annepro2Led_t color = {
         .p.red = 0, .p.green = 0, .p.blue = 0, .p.alpha = 0xff, /* Overwrite color */
     };
     switch (get_highest_layer(layer)) {
@@ -155,7 +152,11 @@ layer_state_t layer_state_set_user(layer_state_t layer) {
 bool led_update_user(led_t leds) {
     if (leds.caps_lock) {
         // Set the caps-lock to red
-        const annepro2Led_t color = {.p.red = 0xff, .p.green = 0x00, .p.blue = 0x00, .p.alpha = 0xff};
+        const annepro2Led_t color = {
+            .p.red = 0xff,
+            .p.green = 0x00,
+            .p.blue = 0x00,
+            .p.alpha = 0xff};
 
         //annepro2LedMaskSetKey(2, 0, color);
         annepro2LedSetForegroundColor(color);
