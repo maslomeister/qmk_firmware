@@ -156,7 +156,7 @@ bool led_update_user(led_t leds) {
             .p.alpha = 0xff
         };
 
-    annepro2LedSetForegroundColor(color.p.red, color.p.green, color.p.blue);
+    annepro2LedMaskSetKey(4, 4, color);
     /* NOTE: Instead of colouring the capslock only, you can change the whole
        keyboard with annepro2LedSetForegroundColor */
     } else {
@@ -168,7 +168,7 @@ bool led_update_user(led_t leds) {
                 .p.blue = 0x00,
                 .p.alpha = 0x00
             };
-        annepro2LedResetForegroundColor();
+        annepro2LedMaskSetKey(4, 4, color);
         }
     }
 
