@@ -73,7 +73,7 @@ const uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /*
      * Layer _FN2_LAYER
      * ,-----------------------------------------------------------------------------------------.
-     * |     | BT1 | BT2 | BT3 | BT4 |     |     |     |LEDOF|LEDON|LED_INTENS|LED_SPEED|   |    |
+     * |     |     |     |     |     |     |     |     |LEDOF|LEDON|LED_INTENS|LED_SPEED|   |    |
      * |-----------------------------------------------------------------------------------------+
      * |        | KC_1| KC_2| KC_3|     |     |     |     |     |     | PS | HOME | END |        |
      * |-----------------------------------------------------------------------------------------+
@@ -86,7 +86,7 @@ const uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      *
      */
     [_FN2_LAYER] = KEYMAP(/* Base */
-    KC_TRNS, KC_AP2_BT1, KC_AP2_BT2, KC_AP2_BT3, KC_AP2_BT4, KC_TRNS, KC_TRNS, KC_TRNS, KC_AP_LED_OFF, KC_AP_LED_ON, KC_AP_LED_NEXT_INTENSITY, KC_AP_LED_SPEED, KC_TRNS, KC_TRNS,
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_AP_LED_OFF, KC_AP_LED_ON, KC_AP_LED_NEXT_INTENSITY, KC_AP_LED_SPEED, KC_TRNS, KC_TRNS,
     KC_TRNS, KC_1, KC_2, KC_3, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_PSCR, KC_HOME, KC_END, KC_TRNS,
     KC_TRNS, KC_4, KC_5, KC_6, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
     KC_TRNS, KC_7, KC_8, KC_9, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_INS, KC_DEL, KC_TRNS,
