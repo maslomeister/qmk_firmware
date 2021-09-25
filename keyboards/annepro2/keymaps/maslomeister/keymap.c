@@ -53,7 +53,7 @@ const uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * |-----------------------------------------------------------------------------------------+
      * |         |LEFT |DOWN |RIGHT|    |    |    |    |    |    |     |       |                 |
      * |-----------------------------------------------------------------------------------------+
-     * |            |V-UP |V-DWN|MUTE |     |     |     |     |     |INSRT| DEL |      UP        |
+     * |    SHIFT   |V-UP |V-DWN|MUTE |     |     |     |     |     |INSRT| DEL |      UP        |
      * |-----------------------------------------------------------------------------------------+
      * |       |      |        |              space           |  Alt  |  LEFT  |  DOWN  | RIGHT  |
      * \-----------------------------------------------------------------------------------------/
@@ -63,7 +63,7 @@ const uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_ESC, KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12, KC_DEL,
     KC_NO, KC_PGDN, KC_UP, KC_PGUP, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_PSCR, KC_HOME, KC_END, KC_NO,
     KC_NO, KC_LEFT, KC_DOWN, KC_RIGHT, KC_NO, KC_NO, KC_MEDIA_PREV_TRACK, KC_MEDIA_PLAY_PAUSE, KC_MEDIA_NEXT_TRACK, KC_NO, KC_NO, KC_NO, KC_NO,
-    KC_NO, KC_VOLU, KC_VOLD, KC_MUTE, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_INS, KC_DEL, KC_UP,
+    KC_LSHIFT, KC_VOLU, KC_VOLD, KC_MUTE, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_INS, KC_DEL, KC_UP,
     KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_LEFT, KC_DOWN, KC_RIGHT
     ),
     /*
@@ -130,23 +130,12 @@ layer_state_t layer_state_set_user(layer_state_t layer) {
     const uint16_t *keymap = &keymaps[get_highest_layer(layer)][0][0];
     switch (get_highest_layer(layer)) {
         case _FN1_LAYER:
-            // Set the leds to green
-            // color.p.red = 0xFF;
-            // color.p.green = 0x60;
-            // color.p.blue = 0xDF;
             enableProfileColor(fn1_profile, keymap);
             break;
         case _FN2_LAYER:
-            // Set the leds to blue
-            // color.p.red = 0x60;
-            // color.p.green = 0xFF;
-            // color.p.blue = 0xFF;
             enableProfileColor(fn2_profile, keymap);
             break;
         default:
-            // Reset back to the current profile
-            //annepro2LedResetForegroundColor();
-            //annepro2LedSetForegroundColor(0x66, 0, 0xFF)-0000;
             resetProfileColor();
             break;
     }
@@ -158,11 +147,11 @@ void enableProfileColor (uint8_t * profile, const uint16_t * keymap) {
         annepro2LedSetForegroundColor(caps_profile[0], caps_profile[1], caps_profile[2]);
     } else {
         annepro2Led_t color = {
-            .p.red = 0, .p.green = 0, .p.blue = 0, .p.alpha = 0xff, /* Overwrite color */
+            .p.red = 0, .p.green = 0, .p.blue = 0, .p.alpha = 0xff, 
             };
 
         annepro2Led_t black = {
-            .p.red = 0, .p.green = 0, .p.blue = 0, .p.alpha = 0xff, /* Overwrite color */
+            .p.red = 0, .p.green = 0, .p.blue = 0, .p.alpha = 0xff, 
             };
 
         color.p.red = profile[0];
@@ -171,9 +160,7 @@ void enableProfileColor (uint8_t * profile, const uint16_t * keymap) {
 
         for (int row = 0; row < MATRIX_ROWS; row++) {
             for (int col = 0; col < MATRIX_COLS; col++) {
-                // if (keymaps[get_highest_layer(layer)][row][col] != KC_NO) {
                 if (keymap[MATRIX_COLS * row + col] != KC_NO) {
-                    color.p.alpha                 = 0xFF; /* Overwrite */
                     ledMask[ROWCOL2IDX(row, col)] = color;
                 } else {
                     ledMask[ROWCOL2IDX(row, col)] = black;
