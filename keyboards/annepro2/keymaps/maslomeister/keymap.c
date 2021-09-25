@@ -91,7 +91,7 @@ const uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 const uint16_t keymaps_size = sizeof(keymaps);
 
-void enableProfileColor(uint8_t * profile, const * uint16_t);
+void enableProfileColor(uint8_t * profile, const uint16_t * keymap);
 void resetProfileColor(void);
 
 bool is_caps_set = false;
@@ -152,7 +152,7 @@ layer_state_t layer_state_set_user(layer_state_t layer) {
     return layer;
 }
 
-void enableProfileColor (uint8_t * profile, const uint16_t *keymap) {
+void enableProfileColor (uint8_t * profile, const uint16_t * keymap) {
     annepro2Led_t color = {
         .p.red = 0, .p.green = 0, .p.blue = 0, .p.alpha = 0xff, /* Overwrite color */
         };
