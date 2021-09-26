@@ -3,8 +3,6 @@
 #include "qmk_ap2_led.h"
 #include "config.h"
 
-#include "print.h"
-
 enum anne_pro_layers {
     _BASE_LAYER,
     _FN1_LAYER,
