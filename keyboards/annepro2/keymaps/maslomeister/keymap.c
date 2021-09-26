@@ -98,7 +98,6 @@ bool is_caps_set = false;
 uint8_t default_profile = 0;
 
 uint8_t base_profile[] = {0xC8, 0x00, 0xFF};
-uint8_t empty_profile[] = {0x00, 0x00, 0x00};
 uint8_t caps_profile[] = {0xFF,0x00,0x00};
 uint8_t fn1_profile[] = {0xFF,0x60,0xDF};
 uint8_t fn2_profile[] = {0x00,0xFF,0xD5};
@@ -175,33 +174,8 @@ void enableProfileColor (uint8_t * profile, const uint16_t * keymap) {
 void resetProfileColor(void) {
     if(is_caps_set) {
         annepro2LedSetForegroundColor(caps_profile[0], caps_profile[1], caps_profile[2]);
-    } else if (default_profile == 0) {
+    }else {
         annepro2LedSetForegroundColor(base_profile[0], base_profile[1], base_profile[2]);
-    } else {
-        annepro2LedResetForegroundColor();
-        annepro2LedSetProfile(default_profile);
     }
 }
-
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode) {
-    case KC_AP_LED_ON:
-        if (record->event.pressed) {
-            default_profile++;
-            if(default_profile == 16){
-                default_profile = 0;
-            }
-
-            if(default_profile == 0) {
-                annepro2LedSetForegroundColor(base_profile[0], base_profile[1], base_profile[2]);
-            } else {
-                annepro2LedSetProfile(default_profile);
-            }
-        }
-        return true;
-    default:
-        return true;
-    }
-}
-
 
