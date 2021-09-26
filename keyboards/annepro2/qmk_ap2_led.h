@@ -36,6 +36,7 @@ void annepro2LedGetStatus(void);
 void annepro2LedNextProfile(void);
 void annepro2LedPrevProfile(void);
 void annepro2LedNextIntensity(void);
+void annepro2LedSetIntensity(uint8_t inten);
 void annepro2LedNextAnimationSpeed(void);
 void annepro2LedForwardKeypress(uint8_t row, uint8_t col);
 

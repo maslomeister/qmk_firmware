@@ -49,6 +49,8 @@ void annepro2LedNextProfile() { protoTx(CMD_LED_NEXT_PROFILE, NULL, 0, 3); }
 
 void annepro2LedNextIntensity() { protoTx(CMD_LED_NEXT_INTENSITY, NULL, 0, 3); }
 
+void annepro2LedSetIntensity(uint8_t inten) { protoTx(CMD_LED_SET_INTENSITY, &inten, sizeof(inten), 3); }
+
 void annepro2LedNextAnimationSpeed() { protoTx(CMD_LED_NEXT_ANIMATION_SPEED, NULL, 0, 3); }
 
 void annepro2LedPrevProfile() { protoTx(CMD_LED_PREV_PROFILE, NULL, 0, 3); }
