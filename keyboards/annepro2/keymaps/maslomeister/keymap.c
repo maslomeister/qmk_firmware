@@ -115,7 +115,7 @@ void housekeeping_task_user(void){
         if(annepro2LedStatus.matrixEnabled && timer_elapsed32(key_timer) >= SLEEP_TIME_AMOUNT){
             annepro2LedDisable();
             print("xd\n");
-            wait_ms(20);
+            wait_ms(50);
         }
     }
 }
