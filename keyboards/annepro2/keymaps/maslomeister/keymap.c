@@ -205,6 +205,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }else{
             print("button pressed, led enabled\n");
             annepro2LedEnable();
+            annepro2LedResetForegroundColor();
+            resetProfileColor();
             led_enabled = true;
         }
     }
