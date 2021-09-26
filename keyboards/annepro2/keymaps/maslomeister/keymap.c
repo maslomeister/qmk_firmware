@@ -119,7 +119,7 @@ void matrix_scan_user(void) {
 void housekeeping_task_user(void){
     if(annepro2LedStatus.matrixEnabled && timer_elapsed32(key_timer) >= 10000 && led_enabled){
         print("keyboard was inactive for > 10 secs, led disable");
-        annepro2LedSetForegroundColor(0x00, 0x00, 0x00);
+        annepro2LedDisable();
         led_enabled = false;
     }
 }
@@ -204,6 +204,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             print("button pressed, timer started\n");
         }else{
             print("button pressed, led enabled\n");
+            annepro2LedEnable();
+            annepro2LedResetForegroundColor();
             resetProfileColor();
             led_enabled = true;
         }
