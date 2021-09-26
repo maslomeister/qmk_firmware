@@ -174,8 +174,25 @@ void enableProfileColor (uint8_t * profile, const uint16_t * keymap) {
 void resetProfileColor(void) {
     if(is_caps_set) {
         annepro2LedSetForegroundColor(caps_profile[0], caps_profile[1], caps_profile[2]);
-    }else {
+    } else {
         annepro2LedSetForegroundColor(base_profile[0], base_profile[1], base_profile[2]);
     }
+}
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+
+    static uint32_t key_timer;
+    if (record->event.pressed) {
+        if(annepro2LedStatus.matrixEnabled && SLEEP_TIMER_ENABLED){
+            key_timer = timer_read32();
+        }else{
+            annepro2LedEnable();
+        }
+    } else {
+        if (timer_elapsed32(key_timer) >= SLEEP_TIME_AMOUNT && annepro2LedStatus.matrixEnabled && SLEEP_TIMER_ENABLED) {
+            annepro2LedDisable();
+        }
+    }
+    return true;
 }
 
