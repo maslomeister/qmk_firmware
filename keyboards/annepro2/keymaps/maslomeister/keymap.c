@@ -110,7 +110,10 @@ void matrix_scan_user(void) {}
 void keyboard_post_init_user(void) {
     annepro2LedEnable();
     resetProfileColor();
-    
+    //too lazy to figure out how to do it otherwise
+    annepro2LedNextIntensity();
+    annepro2LedNextIntensity();
+    annepro2LedNextIntensity();
 }
 
 // The function to handle the caps lock logic
@@ -199,7 +202,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 annepro2LedSetProfile(default_profile);
             }
         }
-        return false;
+        return true;
     default:
         return true;
     }
