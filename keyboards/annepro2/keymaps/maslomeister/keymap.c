@@ -108,15 +108,19 @@ uint8_t fn2_profile[] = {0x00,0xFF,0xD5};
 void matrix_init_user(void) {}
 
 void matrix_scan_user(void) {
+    // if (timer_elapsed32(key_timer) >= SLEEP_TIME_AMOUNT && annepro2LedStatus.matrixEnabled && SLEEP_TIMER_ENABLED) {
+    //         annepro2LedDisable();
+    // }
+
+}
+
+
+void process_record(keyrecord_t *record){
     if(annepro2LedStatus.matrixEnabled){
         print("Led on");
     }else{
         print("Led off");
     }
-    // if (timer_elapsed32(key_timer) >= SLEEP_TIME_AMOUNT && annepro2LedStatus.matrixEnabled && SLEEP_TIMER_ENABLED) {
-    //         annepro2LedDisable();
-    // }
-
 }
 
 void keyboard_post_init_user(void) {
@@ -194,10 +198,8 @@ void resetProfileColor(void) {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (record->event.pressed) {
-        if(annepro2LedStatus.matrixEnabled && SLEEP_TIMER_ENABLED){
+        if(annepro2LedStatus.matrixEnabled){
             key_timer = timer_read32();
-        }else{
-            annepro2LedEnable();
         }
     }
     return true;
