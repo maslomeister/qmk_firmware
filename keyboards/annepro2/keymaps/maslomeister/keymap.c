@@ -3,6 +3,8 @@
 #include "qmk_ap2_led.h"
 #include "config.h"
 
+#include "print.h"
+
 enum anne_pro_layers {
     _BASE_LAYER,
     _FN1_LAYER,
@@ -95,8 +97,9 @@ void enableProfileColor(uint8_t * profile, const uint16_t * keymap);
 void resetProfileColor(void);
 
 bool is_caps_set = false;
-uint8_t default_profile = 0;
+static uint32_t key_timer;
 
+uint8_t default_profile = 0;
 uint8_t base_profile[] = {0xC8, 0x00, 0xFF};
 uint8_t caps_profile[] = {0xFF,0x00,0x00};
 uint8_t fn1_profile[] = {0xFF,0x60,0xDF};
@@ -180,13 +183,13 @@ void resetProfileColor(void) {
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-
-    static uint32_t key_timer;
+    print("process_record_works");
     if (record->event.pressed) {
         if(annepro2LedStatus.matrixEnabled && SLEEP_TIMER_ENABLED){
             key_timer = timer_read32();
         }else{
             annepro2LedEnable();
+
         }
     } else {
         if (timer_elapsed32(key_timer) >= SLEEP_TIME_AMOUNT && annepro2LedStatus.matrixEnabled && SLEEP_TIMER_ENABLED) {
