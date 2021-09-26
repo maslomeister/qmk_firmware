@@ -116,10 +116,8 @@ void matrix_scan_user(void) {
 
 
 void housekeeping_task_user(void){
-    if(annepro2LedStatus.matrixEnabled){
-        print("Led on");
-    }else{
-        print("Led off");
+    if(annepro2LedStatus.matrixEnabled && timer_elapsed32(key_timer) >= 10000){
+        annepro2LedDisable();
     }
 }
 
@@ -200,6 +198,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (record->event.pressed) {
         if(annepro2LedStatus.matrixEnabled){
             key_timer = timer_read32();
+        }else{
+            annepro2LedEnable();
         }
     }
     return true;
