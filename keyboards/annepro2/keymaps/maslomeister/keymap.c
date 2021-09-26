@@ -97,7 +97,6 @@ void enableProfileColor(uint8_t * profile, const uint16_t * keymap);
 void resetProfileColor(void);
 
 bool is_caps_set = false;
-bool led_enabled = true;
 bool led_state = true;
 uint32_t key_timer;
 
@@ -113,9 +112,10 @@ void matrix_scan_user(void) {}
 
 void housekeeping_task_user(void){
     if(led_state){
-        if(annepro2LedStatus.matrixEnabled && timer_elapsed32(key_timer) >= SLEEP_TIME_AMOUNT && led_enabled){
+        if(annepro2LedStatus.matrixEnabled && timer_elapsed32(key_timer) >= SLEEP_TIME_AMOUNT){
             annepro2LedDisable();
-            led_enabled = false;
+            print("xd\n");
+            wait_ms(15);
         }
     }
 }
@@ -207,7 +207,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             key_timer = timer_read32();
             if(!annepro2LedStatus.matrixEnabled){
             annepro2LedEnable();
-            led_enabled = true;
         }
         }
     }
