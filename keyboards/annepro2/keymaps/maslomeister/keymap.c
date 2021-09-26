@@ -108,17 +108,10 @@ uint8_t fn2_profile[] = {0x00,0xFF,0xD5};
 
 void matrix_init_user(void) {}
 
-void matrix_scan_user(void) {
-    // if (timer_elapsed32(key_timer) >= SLEEP_TIME_AMOUNT && annepro2LedStatus.matrixEnabled && SLEEP_TIMER_ENABLED) {
-    //         annepro2LedDisable();
-    // }
-
-}
-
+void matrix_scan_user(void) {}
 
 void housekeeping_task_user(void){
-    if(annepro2LedStatus.matrixEnabled && timer_elapsed32(key_timer) >= 10000 && led_enabled){
-        print("keyboard was inactive for > 10 secs, led disabled\n");
+    if(annepro2LedStatus.matrixEnabled && timer_elapsed32(key_timer) >= SLEEP_TIME_AMOUNT && led_enabled){
         annepro2LedDisable();
         led_enabled = false;
     }
