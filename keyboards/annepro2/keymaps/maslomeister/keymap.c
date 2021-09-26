@@ -112,9 +112,11 @@ void matrix_init_user(void) {}
 void matrix_scan_user(void) {}
 
 void housekeeping_task_user(void){
-    if(annepro2LedStatus.matrixEnabled && timer_elapsed32(key_timer) >= SLEEP_TIME_AMOUNT && led_enabled){
-        annepro2LedDisable();
-        led_enabled = false;
+    if(led_state){
+        if(annepro2LedStatus.matrixEnabled && timer_elapsed32(key_timer) >= SLEEP_TIME_AMOUNT && led_enabled){
+            annepro2LedDisable();
+            led_enabled = false;
+        }
     }
 }
 
