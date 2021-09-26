@@ -194,13 +194,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (record->event.pressed) {
         if(annepro2LedStatus.matrixEnabled){
             key_timer = timer_read32();
-            print("button pressed, timer started\n");
         }else{
-            print("button pressed, led enabled\n");
             key_timer = timer_read32();
             annepro2LedEnable();
-            //annepro2LedResetForegroundColor();
-            //resetProfileColor();
             led_enabled = true;
         }
     }
