@@ -178,6 +178,7 @@ void resetProfileColor(void) {
     } else if (default_profile == 0) {
         annepro2LedSetForegroundColor(base_profile[0], base_profile[1], base_profile[2]);
     } else {
+        annepro2LedResetForegroundColor();
         annepro2LedSetProfile(default_profile);
     }
 }
