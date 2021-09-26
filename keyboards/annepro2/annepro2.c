@@ -198,12 +198,12 @@ bool OVERRIDE process_record_kb(uint16_t keycode, keyrecord_t *record) {
 
 void suspend_power_down_kb(void) {
     if(annepro2LedStatus.matrixEnabled){
-        annepro2LedEnable();
+        annepro2LedDisable();
     }
 }
 
 void suspend_wakeup_init_kb(void) {
     if (!annepro2LedStatus.matrixEnabled) {
-        annepro2LedDisable();
+        annepro2LedEnable();
     }
 }
