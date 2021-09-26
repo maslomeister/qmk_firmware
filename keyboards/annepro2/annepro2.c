@@ -90,6 +90,16 @@ void OVERRIDE keyboard_post_init_kb(void) {
 
 void OVERRIDE matrix_init_kb(void) { matrix_init_user(); }
 
+void ap2_sleep(void) {
+    ap2_is_asleep = 1;
+    annepro2LedDisable();
+}
+
+void ap2_wake(void) {
+    annepro2LedEnable();
+    ap2_is_asleep = 0;
+}
+
 void matrix_scan_kb() {
     // if there's stuff on the ble serial buffer
     // read it into the capslock struct
