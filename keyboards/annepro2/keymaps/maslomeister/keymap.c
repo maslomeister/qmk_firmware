@@ -97,6 +97,7 @@ void enableProfileColor(uint8_t * profile, const uint16_t * keymap);
 void resetProfileColor(void);
 
 bool is_caps_set = false;
+bool led_enabled = true;
 static uint32_t key_timer;
 
 uint8_t default_profile = 0;
@@ -116,9 +117,10 @@ void matrix_scan_user(void) {
 
 
 void housekeeping_task_user(void){
-    if(annepro2LedStatus.matrixEnabled && timer_elapsed32(key_timer) >= 10000){
+    if(annepro2LedStatus.matrixEnabled && timer_elapsed32(key_timer) >= 10000 && led_enabled){
         print("keyboard was inactive for > 10 secs, led disable");
         annepro2LedDisable();
+        led_enabled = false;
     }
 }
 
@@ -203,6 +205,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }else{
             print("button pressed, led enabled\n");
             annepro2LedEnable();
+            led_enabled = true;
         }
     }
     return true;
