@@ -113,7 +113,17 @@ void matrix_scan_kb() {
  * @returns false   processing for this keycode has been completed.
  */
 bool OVERRIDE process_record_kb(uint16_t keycode, keyrecord_t *record) {
+
+    static uint32_t key_timer;
+
     if (record->event.pressed) {
+        if(annepro2LedStatus.matrixEnabled && SLEEP_TIMER_ENABLED){
+            key_timer = timer_read32();
+        }else{
+            annepro2LedEnable();
+        }
+        
+
         if (annepro2LedStatus.matrixEnabled && annepro2LedStatus.isReactive) {
             annepro2LedForwardKeypress(record->event.key.row, record->event.key.col);
         }
@@ -190,6 +200,10 @@ bool OVERRIDE process_record_kb(uint16_t keycode, keyrecord_t *record) {
 
             default:
                 break;
+        }
+    } else {
+        if (timer_elapsed32(key_timer) >= 10000 && annepro2LedStatus.matrixEnabled && SLEEP_TIMER_ENABLED) {
+            annepro2LedDisable();
         }
     }
     return process_record_user(keycode, record);

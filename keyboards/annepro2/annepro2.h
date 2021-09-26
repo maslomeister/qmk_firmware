@@ -19,6 +19,7 @@
 #include "quantum.h"
 
 #define OVERRIDE __attribute__((noinline))
+#define SLEEP_TIMER_ENABLED true
 
 typedef struct __attribute__((__packed__)) {
     uint8_t _dummy[10];
