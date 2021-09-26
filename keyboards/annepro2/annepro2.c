@@ -203,7 +203,7 @@ void suspend_power_down_kb(void) {
 }
 
 void suspend_wakeup_init_kb(void) {
-    if (!annepro2LedStatus.matrixEnabled) {
+    if (annepro2LedStatus.matrixEnabled) {
         annepro2LedEnable();
     }
 }
