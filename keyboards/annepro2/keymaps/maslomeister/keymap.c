@@ -63,7 +63,7 @@ const uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_ESC, KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12, KC_DEL,
     KC_NO, KC_HOME, KC_UP, KC_END, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
     KC_NO, KC_LEFT, KC_DOWN, KC_RIGHT, KC_NO, KC_DEL, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
-    KC_LSHIFT, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_UP, KC_UP, KC_UP,
+    KC_LSHIFT, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_UP,
     KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_LEFT, KC_DOWN, KC_RIGHT
     ),
     /*
@@ -101,7 +101,7 @@ uint8_t base_profile[] = {0xC8, 0x00, 0xFF};
 uint8_t empty_profile[] = {0x00, 0x00, 0x00};
 uint8_t caps_profile[] = {0xFF,0x00,0x00};
 uint8_t fn1_profile[] = {0xFF,0x60,0xDF};
-uint8_t fn2_profile[] = {0x60,0xFF,0xD5};
+uint8_t fn2_profile[] = {0x00,0xFF,0xD5};
 
 void matrix_init_user(void) {}
 
