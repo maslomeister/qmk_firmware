@@ -193,7 +193,6 @@ void resetProfileColor(void) {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (record->event.pressed) {
-        key_timer = timer_read32();
         switch(keycode){
             case KC_AP_LED_OFF:
                 led_state = false;
@@ -202,9 +201,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 led_state = true;
                 break;
         }
-        if(!annepro2LedStatus.matrixEnabled && led_state){
+        if(led_state){
+            key_timer = timer_read32();
+            if(!annepro2LedStatus.matrixEnabled){
             annepro2LedEnable();
             led_enabled = true;
+        }
         }
     }
     return true;
