@@ -26,6 +26,10 @@ static uint8_t ledMcuWakeup[11] = {0x7b, 0x10, 0x43, 0x10, 0x03, 0x00, 0x00, 0x7
 
 ble_capslock_t BLECapsLock = {._dummy = {0}, .caps_lock = false};
 
+const uint32_t SLEEP_TIME_AMOUNT = 120 * 1000;
+uint32_t sleep_timer;
+int8_t ap2_is_asleep = 0;
+
 void OVERRIDE bootloader_jump(void) {
     // Send msg to shine to boot into IAP
     annepro2SetIAP();
@@ -106,6 +110,13 @@ void matrix_scan_kb() {
         protoConsume(&proto, byte);
     }
 
+    if (annepro2LedStatus.matrixEnabled &&
+        ap2_is_asleep == 0 &&
+        timer_elapsed32(sleep_timer) >= SLEEP_TIME_AMOUNT)
+    {
+        ap2_sleep();
+    }
+
     matrix_scan_user();
 }
 
@@ -117,6 +128,11 @@ bool OVERRIDE process_record_kb(uint16_t keycode, keyrecord_t *record) {
 
         if (annepro2LedStatus.matrixEnabled && annepro2LedStatus.isReactive) {
             annepro2LedForwardKeypress(record->event.key.row, record->event.key.col);
+        }
+
+        sleep_timer = timer_read32();
+        if (ap2_is_asleep) {
+            ap2_wake();
         }
 
         const annepro2Led_t blue = {

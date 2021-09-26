@@ -97,9 +97,6 @@ void enableProfileColor(uint8_t * profile, const uint16_t * keymap);
 void resetProfileColor(void);
 
 bool is_caps_set = false;
-bool led_enabled = true;
-bool led_state = true;
-uint32_t key_timer;
 
 uint8_t default_profile = 0;
 uint8_t base_profile[] = {0xC8, 0x00, 0xFF};
@@ -110,16 +107,6 @@ uint8_t fn2_profile[] = {0x00,0xFF,0xD5};
 void matrix_init_user(void) {}
 
 void matrix_scan_user(void) {}
-
-void housekeeping_task_user(void){
-    if(led_state){
-        if(annepro2LedStatus.matrixEnabled && timer_elapsed32(key_timer) >= SLEEP_TIME_AMOUNT && led_enabled){
-            annepro2LedDisable();
-            led_enabled = false;
-        }
-    }
-    
-}
 
 void keyboard_post_init_user(void) {
     annepro2LedEnable();
@@ -192,25 +179,4 @@ void resetProfileColor(void) {
     } else {
         annepro2LedSetForegroundColor(base_profile[0], base_profile[1], base_profile[2]);
     }
-}
-
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    if (record->event.pressed) {
-        switch(keycode){
-            case KC_AP_LED_OFF:
-                led_state = false;
-                break;
-            case KC_AP_LED_ON:
-                led_state = true;
-                break;
-        }
-        if(led_state){
-            key_timer = timer_read32();
-            if(!annepro2LedStatus.matrixEnabled){
-                annepro2LedEnable();
-                led_enabled = true;
-            }
-        }
-    }
-    return true;
 }

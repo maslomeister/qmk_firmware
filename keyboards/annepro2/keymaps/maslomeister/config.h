@@ -4,5 +4,3 @@
 // Tap layer wait time
 #undef TAPPING_TERM
 #define TAPPING_TERM 200
-// Disable LEDs if keyboard was inactive for SLEEP_TIME_AMOUNT
-#define SLEEP_TIME_AMOUNT 5000  //(60000 * 5)
