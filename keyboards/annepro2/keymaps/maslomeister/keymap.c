@@ -115,7 +115,7 @@ void matrix_scan_user(void) {
 }
 
 
-void process_record(keyrecord_t *record){
+void housekeeping_task_user(void){
     if(annepro2LedStatus.matrixEnabled){
         print("Led on");
     }else{
