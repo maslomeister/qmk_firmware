@@ -109,7 +109,7 @@ void matrix_scan_user(void) {}
 void keyboard_post_init_user(void) {
     annepro2LedEnable();
     resetProfileColor();
-    annepro2LedSetIntensity(2);
+    annepro2LedSetIntensity(5);
 }
 
 // The function to handle the caps lock logic
