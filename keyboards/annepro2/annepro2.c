@@ -26,7 +26,7 @@ static uint8_t ledMcuWakeup[11] = {0x7b, 0x10, 0x43, 0x10, 0x03, 0x00, 0x00, 0x7
 
 ble_capslock_t BLECapsLock = {._dummy = {0}, .caps_lock = false};
 
-const uint32_t SLEEP_TIME_AMOUNT = 120 * 1000;
+const uint32_t SLEEP_TIME_AMOUNT =  1000 * 60 * 5;
 uint32_t sleep_timer;
 int8_t ap2_is_asleep = 0;
 
