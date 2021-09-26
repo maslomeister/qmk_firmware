@@ -5,4 +5,4 @@
 #undef TAPPING_TERM
 #define TAPPING_TERM 200
 // Disable LEDs if keyboard was inactive for SLEEP_TIME_AMOUNT
-#define SLEEP_TIME_AMOUNT (60000 * 5)
+#define SLEEP_TIME_AMOUNT 10000  //(60000 * 5)
