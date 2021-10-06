@@ -41,8 +41,8 @@
 // Number of supported layouts
 #define NUM_LAYOUTS 4
 
-#define AP2_LED_SLEEP_ENABLE 1
-#define SLEEP_TIME_AMOUNT (500 * 1000)
+#define AP2_LED_SLEEP_ENABLE 0
+#define SLEEP_TIME_AMOUNT (120 * 1000)
 
 // Matrix keymap
 

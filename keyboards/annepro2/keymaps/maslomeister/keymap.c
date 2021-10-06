@@ -102,9 +102,34 @@ uint8_t caps_profile[] = {0xFF,0x00,0x00};
 uint8_t fn1_profile[] = {0xFF,0x60,0xDF};
 uint8_t fn2_profile[] = {0x00,0xFF,0xD5};
 
+uint32_t sleep_timer;
+int8_t ap2_is_asleep = 0;
+
+void ap2_dim_leds(void) {
+    annepro2LedNextIntensity();
+    sleep_timer = timer_read32();
+    if(annepro2LedStatus.ledIntensity == 7){
+        ap2_is_asleep = 1;
+        annepro2LedDisable();
+    }
+}
+
+void ap2_wake(void) {
+    annepro2LedEnable();
+    annepro2LedSetIntensity(5);
+    ap2_is_asleep = 0;
+}
+
 void matrix_init_user(void) {}
 
-void matrix_scan_user(void) {}
+void matrix_scan_user(void) {
+    if (annepro2LedStatus.matrixEnabled &&
+        ap2_is_asleep == 0 &&
+        timer_elapsed32(sleep_timer) >= SLEEP_TIME_AMOUNT)
+    {
+        ap2_dim_leds();
+    }
+}
 
 void keyboard_post_init_user(void) {
     annepro2LedEnable();
@@ -178,4 +203,12 @@ void resetProfileColor(void) {
     } else {
         annepro2LedSetForegroundColor(base_profile[0], base_profile[1], base_profile[2]);
     }
+}
+
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    sleep_timer = timer_read32();
+        if (ap2_is_asleep) {
+            ap2_wake();
+        }
 }

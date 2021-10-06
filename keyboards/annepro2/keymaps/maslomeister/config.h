@@ -4,3 +4,5 @@
 // Tap layer wait time
 #undef TAPPING_TERM
 #define TAPPING_TERM 200
+
+#define SLEEP_TIME_AMOUNT (120 * 1000)
