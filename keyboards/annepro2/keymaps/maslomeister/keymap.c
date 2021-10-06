@@ -211,4 +211,5 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         if (ap2_is_asleep) {
             ap2_wake();
         }
+    return true;
 }
